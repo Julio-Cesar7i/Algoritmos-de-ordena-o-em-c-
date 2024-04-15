@@ -1,293 +1,85 @@
-# Algoritmos-de-ordena-o-em-c-
-Repositório com os algortimos de ordenação em c++. 
+Repositório de Algoritmos de Ordenação em C++
+Este repositório contém implementações de seis algoritmos de ordenação diferentes em C++: InsertionSort, QuickSort, SelectionSort (classificação por seleção), BubbleSort (classificação por bolha), ShellSort (classificação por cascas) e MergeSort (classificação por intercalação).
 
-+++++++++++++++++++  InsertionSort +++++++++++++++++++
-#include <iostream>
-#include <vector>
-#include <chrono>
-#include <algorithm>
-#include <random>
-void insertionSort(std::vector<int>& arr) {
-    int n = arr.size();
-    for (int i = 1; i < n; ++i) {
-        int key = arr[i];
-        int j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j = j - 1;
-        }
-        arr[j + 1] = key;
-    }
-}
-int main() {
-    std::vector<int> numElementos = {10, 100, 1000, 10000, 100000};
-    for (int num : numElementos) {
-        std::vector<int> numeros(num);
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(1, 100);
-        for (int i = 0; i < num; ++i) {
-            numeros[i] = dis(gen);
-        }
-        auto start = std::chrono::steady_clock::now();
-        insertionSort(numeros);
-        auto end = std::chrono::steady_clock::now();
-        std::chrono::duration<double> elapsedSeconds = end - start;
-        std::cout << "Tempo para ordenar " << num << " elementos: " << elapsedSeconds.count() << " segundos" << std::endl;
-    }
-    return 0;
-}
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-+++++++++++++++++++  QuickSort  +++++++++++++++++++
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <ctime>
+1. InsertionSort (Classificação por Inserção)
+O InsertionSort classifica uma matriz de inteiros no local (std::vector<int>& arr).
 
-using namespace std;
+Explicação:
+- A função insertionSort recebe um vetor de inteiros (arr) como entrada.
+- A variável n armazena o tamanho do vetor.
+- O loop externo itera do segundo elemento (i = 1) até o final do vetor (i < n).
+- A variável key armazena o valor do elemento atual (arr[i]).
+- O loop interno (while) itera para trás a partir do elemento anterior (j = i - 1) até encontrar a posição correta para a chave.
+- Se o elemento no índice anterior (arr[j]) for maior que a chave, ele é deslocado uma posição para frente (arr[j + 1] = arr[j]).
+- A variável j é decrementada para continuar verificando os elementos anteriores.
+- Uma vez que a posição correta é encontrada, a chave é inserida naquele índice (arr[j + 1] = key).
+- 
+2. QuickSort (Classificação Rápida)
+O QuickSort classifica uma matriz de inteiros no local (vector<int> &arr).
 
-void quickSort(vector<int> &arr, int baixo, int alto) {
-    if (baixo < alto) {
-        int pivo = arr[(baixo + alto) / 2];
-        int i = baixo - 1;
-        int j = alto + 1;
-        while (true) {
-            do {
-                i++;
-            } while (arr[i] < pivo);
-            do {
-                j--;
-            } while (arr[j] > pivo);
+Explicação:
+- A função quickSort recebe um vetor de inteiros (arr), o índice inicial (baixo) e o índice final (alto) como entrada.
+- Caso base: Se o índice inicial for maior ou igual ao índice final, significa que a submatriz possui um ou zero elementos, portanto já está ordenada.
+- A variável pivo armazena o elemento pivô, que é escolhido como o elemento do meio ((baixo + alto) / 2).
+- As variáveis i e j são usadas para particionar a matriz.
+- O loop while continua até que i e j se cruzem.
+- O loop interno do-while para i incrementa i até encontrar um elemento maior que o pivo.
+- O loop interno do-while para j decrementa j até encontrar um elemento menor que o pivo.
+- Se i e j não se cruzaram, os elementos nesses índices são trocados (swap(arr[i], arr[j])).
+- A função quickSort é chamada recursivamente para as submatrizes antes e depois do pivô (quickSort(arr, baixo, j) e quickSort(arr, j + 1, alto)).
 
-            if (i >= j) {
-                break;
-            }
+3. SelectionSort (Classificação por Seleção)
+O SelectionSort classifica uma matriz de inteiros no local (std::vector<int>& arr).
 
-            swap(arr[i], arr[j]);
-        }
+Explicação:
+- A função selectionSort recebe um vetor de inteiros (arr) como entrada.
+- A variável n armazena o tamanho do vetor.
+- O loop externo itera do primeiro elemento (i = 0) ao penúltimo elemento (i < n-1) do vetor.
+- A variável min_idx armazena o índice do elemento mínimo atual. É inicializado com o índice atual (i).
+- O loop interno (for) itera do próximo elemento (j = i+1) até o final do vetor.
+- Se um elemento no índice j for menor que o elemento mínimo atual (arr[j] < arr[min_idx]), o min_idx é atualizado para j.
+- Após o loop interno, o elemento no índice mínimo (arr[min_idx]) é trocado com o elemento no índice atual (i) usando std::swap.
 
-        quickSort(arr, baixo, j);
-        quickSort(arr, j + 1, alto);
-    }
-}
+4. BubbleSort (Classificação por Bolha)
+Como observado anteriormente, o código fornecido para bubbleSort tinha o mesmo nome da função de selectionSort. Vamos corrigi-lo aqui e explicar o BubbleSort:
 
-int main() {
-    vector<int> numeros;
-    vector<int> tamanhos = {10, 100, 1000, 10000, 100000};
+Explicação:
+- O BubbleSort itera através do vetor repetidamente, compara elementos adjacentes e os troca se estiverem na ordem incorreta.
+- Os elementos maiores vão "subindo" para o final do vetor a cada iteração.
+- A função bubbleSort (corrigida para o nome correto) recebe um vetor de inteiros (std::vector<int>& arr) como entrada.
+- Variáveis n armazena o tamanho do vetor.
+- O loop externo (for) executa n-1 iterações (pois a comparação é feita com o elemento seguinte).
+- A variável trocou é usada para saber se houve alguma troca na iteração atual. Se não houver troca, significa que o vetor já está ordenado.
+- O loop interno (for) itera de 0 até n-2 comparando elementos adjacentes.
+- Se o elemento atual (arr[j]) for maior que o próximo (arr[j + 1]), eles são trocados usando std::swap.
+- A variável trocou é marcada como verdadeira para indicar que houve troca.
 
-    srand(time(0));
+5. MergeSort (Classificação por Intercalação)
+O MergeSort classifica um vetor de inteiros dividindo-o recursivamente em subvetores menores, ordenando esses subvetores e então intercalando-os de volta em um vetor ordenado.
 
-    for (int tamanho : tamanhos) {
-        numeros.clear(); 
+Explicação:
+- A função mergeSort recebe um vetor de inteiros (arr), o índice inicial (l) e o índice final (r) como entrada.
+- Caso base: Se o índice inicial for maior ou igual ao índice final, significa que o subvetor tem zero ou um elemento, portanto já está ordenado.
+- O índice do meio (m) é calculado como o ponto médio do subvetor (m = l + (r - l) / 2).
+- A função mergeSort é chamada recursivamente para as metades esquerda (mergeSort(arr, l, m)) e direita (mergeSort(arr, m + 1, r)) do vetor.
+- A função merge junta as metades esquerda e direita ordenadas do vetor em um único vetor ordenado.
+- A função merge recebe o vetor (arr), os índices inicial (l), do meio (m) e final (r) como entrada.
+- Ele cria arrays temporários L e R para armazenar as metades esquerda e direita do vetor original.
+- Ele copia os elementos das metades esquerda e direita para os arrays temporários L e R.
+- Ele então mescla ordenadamente os elementos de volta para o vetor original (arr) comparando os elementos de L e R e copiando o menor elemento para arr.
+- Esse processo continua até que todos os elementos de L ou R sejam copiados para arr.
+- Este código fornece implementações para seis algoritmos de ordenação comuns em C++. Você pode usá-lo para comparar a eficiência e o tempo de execução desses algoritmos para diferentes tamanhos de vetor.
 
-        for (int i = 0; i < tamanho; i++) {
-            numeros.push_back(rand() % 1000000);
-        }
+6. ShellSort (Classificação por Cascas)
+O ShellSort é uma variação do InsertionSort que usa incrementos decrescentes para mover elementos para suas posições ordenadas.
 
-        clock_t inicio = clock();
-        quickSort(numeros, 0, numeros.size() - 1);
-        clock_t fim = clock();
-
-        double tempo_levado = double(fim - inicio) / CLOCKS_PER_SEC;
-
-        cout << "Tempo para organizar vetor de tamanho " << tamanho << ": " << tempo_levado << " segundos" << endl;
-    }
-
-    return 0;
-}
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-+++++++++++++++++++  SelectionSort  +++++++++++++++++++
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <chrono>
-void selectionSort(std::vector<int>& arr) {
-    int n = arr.size();
-    for (int i = 0; i < n-1; i++) {
-        int min_idx = i;
-        for (int j = i+1; j < n; j++) {
-            if (arr[j] < arr[min_idx]) {
-                min_idx = j;
-            }
-        }
-        std::swap(arr[i], arr[min_idx]);
-    }
-}
-int main() {
-    for (int i = 1; i <= 100; ++i) {
-        int tamanho = i * 1000;
-        std::vector<int> numeros(tamanho);
-        for (int j = 0; j < tamanho; ++j) {
-            numeros[j] = rand() % 10000;
-        }
-        std::vector<int> arr(numeros);
-        std::chrono::steady_clock::time_point inicio = std::chrono::steady_clock::now();
-        selectionSort(arr);
-        std::chrono::steady_clock::time_point fim = std::chrono::steady_clock::now();
-        std::cout << "Tempo levado para ordenar o vetor de tamanho " << tamanho << ": " << std::chrono::duration_cast<std::chrono::microseconds>(fim - inicio).count() << " microssegundos" << std::endl;
-    }
-    return 0;
-}
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-+++++++++++++++++++  BubbleSort  +++++++++++++++++++
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <chrono>
-void selectionSort(std::vector<int>& arr) {
-    int n = arr.size();
-    for (int i = 0; i < n-1; i++) {
-        int min_idx = i;
-        for (int j = i+1; j < n; j++) {
-            if (arr[j] < arr[min_idx]) {
-                min_idx = j;
-            }
-        }
-        std::swap(arr[i], arr[min_idx]);
-    }
-}
-int main() {
-    for (int i = 1; i <= 100; ++i) {
-        int tamanho = i * 1000;
-        std::vector<int> numeros(tamanho);
-        for (int j = 0; j < tamanho; ++j) {
-            numeros[j] = rand() % 10000;
-        }
-        std::vector<int> arr(numeros);
-        std::chrono::steady_clock::time_point inicio = std::chrono::steady_clock::now();
-        selectionSort(arr);
-        std::chrono::steady_clock::time_point fim = std::chrono::steady_clock::now();
-        std::cout << "Tempo levado para ordenar o vetor de tamanho " << tamanho << ": " << std::chrono::duration_cast<std::chrono::microseconds>(fim - inicio).count() << " microssegundos" << std::endl;
-    }
-    return 0;
-}
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-+++++++++++++++++++  ShellSort  +++++++++++++++++++
-#include <iostream>
-#include <algorithm>
-#include <random>
-#include <chrono>
-
-void shell_sort(int arr[], int n) {
-    for (int gap = n / 2; gap > 0; gap /= 2) {
-        for (int i = gap; i < n; i += 1) {
-            int temp = arr[i];
-            int j;
-            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
-                arr[j] = arr[j - gap];
-            }
-            arr[j] = temp;
-        }
-    }
-}
-
-int main() {
-    std::vector<int> numeros = {10, 100, 1000, 10000, 100000};
-
-    for (int n : numeros) {
-        int arr[n];
-
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<int> dist(1, n);
-
-        for (int i = 0; i < n; ++i) {
-            arr[i] = dist(gen);
-        }
-
-        auto start = std::chrono::high_resolution_clock::now();
-
-        shell_sort(arr, n);
-
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::micro> elapsed_microseconds = end - start;
-
-        std::cout << "Tempo de organização para " << n << " números: " << elapsed_microseconds.count() << " microssegundos" << std::endl;
-    }
-
-    return 0;
-}
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-+++++++++++++++++++  MergeSort  +++++++++++++++++++
-#include <iostream>
-#include <chrono>
-#include <vector>
-#include <random>
-
-void merge(int arr[], int l, int m, int r) {
-    int n1 = m - l + 1;
-    int n2 = r - m;
-
-    int L[n1], R[n2];
-
-    for (int i = 0; i < n1; i++)
-        L[i] = arr[l + i];
-    for (int j = 0; j < n2; j++)
-        R[j] = arr[m + 1 + j];
-
-    int i = 0;
-    int j = 0;
-    int k = l;
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            i++;
-        } else {
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < n1) {
-        arr[k] = L[i];
-        i++;
-        k++;
-    }
-
-    while (j < n2) {
-        arr[k] = R[j];
-        j++;
-        k++;
-    }
-}
-
-void mergeSort(int arr[], int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
-
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-
-        merge(arr, l, m, r);
-    }
-}
-
-int main() {
-    std::vector<int> sizes = {10, 100, 1000, 10000, 100000};
-
-    for (int size : sizes) {
-        int arr[size];
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<int> dis(1, 1000);
-
-        for (int i = 0; i < size; i++) {
-            arr[i] = dis(gen);
-        }
-
-        auto start = std::chrono::high_resolution_clock::now();
-
-        mergeSort(arr, 0, size - 1);
-
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> duration = end - start;
-
-        std::cout << "Tempo para organizar " << size << " números: " << duration.count() << " segundos" << std::endl;
-    }
-
-    return 0;
-}
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+Explicação:
+- A função shell_sort recebe um vetor de inteiros (arr) e o tamanho do vetor (n) como entrada.
+- O loop externo itera por gaps (gap = n / 2), que vão sendo reduzidos pela metade a cada iteração (gap /= 2) até chegarem a 1.
+- O loop interno (for) itera pelos elementos do vetor com deslocamento igual ao gap atual (i += gap).
+- O valor do elemento atual (temp) é armazenado em uma variável temporária.
+- Um loop interno while percorre o vetor para trás a partir do elemento atual (j = i) com o deslocamento do gap (j >= gap).
+- Se o elemento anterior (arr[j - gap]) for maior que o elemento atual (temp), eles são trocados (arr[j] = arr[j - gap]).
+- O índice j é decrementado para continuar verificando os elementos anteriores com o deslocamento do gap.
+- Uma vez que a posição correta é encontrada (j < gap), o elemento temporário (temp) é colocado na posição final (arr[j] = temp).
+- O ShellSort geralmente tem um desempenho melhor que o InsertionSort para grandes vetores devido aos saltos maiores realizados durante a ordenação.
