@@ -1,4 +1,4 @@
-# Algoritmos-de-ordena-o-em-c-
+# Algoritmos-de-ordena-o-em-c++.
 Repositório com os algortimos de ordenação em c++. 
 
 +++++++++++++++++++  InsertionSort +++++++++++++++++++
