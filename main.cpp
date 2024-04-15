@@ -131,34 +131,44 @@ int main() {
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 +++++++++++++++++++  BubbleSort  +++++++++++++++++++
 #include <iostream>
-#include <vector>
-#include <algorithm>
 #include <chrono>
-void selectionSort(std::vector<int>& arr) {
+#include <vector>
+#include <random>
+
+void bubbleSort(std::vector<int>& arr) {
     int n = arr.size();
-    for (int i = 0; i < n-1; i++) {
-        int min_idx = i;
-        for (int j = i+1; j < n; j++) {
-            if (arr[j] < arr[min_idx]) {
-                min_idx = j;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                std::swap(arr[j], arr[j + 1]);
             }
         }
-        std::swap(arr[i], arr[min_idx]);
     }
 }
+
 int main() {
-    for (int i = 1; i <= 100; ++i) {
-        int tamanho = i * 1000;
-        std::vector<int> numeros(tamanho);
-        for (int j = 0; j < tamanho; ++j) {
-            numeros[j] = rand() % 10000;
+    std::vector<int> sizes = {10, 100, 1000, 10000, 100000};
+
+    for (const int size : sizes) {
+        std::vector<int> numbers;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<int> dis(1, 1000000);
+
+        for (int i = 0; i < size; i++) {
+            numbers.push_back(dis(gen));
         }
-        std::vector<int> arr(numeros);
-        std::chrono::steady_clock::time_point inicio = std::chrono::steady_clock::now();
-        selectionSort(arr);
-        std::chrono::steady_clock::time_point fim = std::chrono::steady_clock::now();
-        std::cout << "Tempo levado para ordenar o vetor de tamanho " << tamanho << ": " << std::chrono::duration_cast<std::chrono::microseconds>(fim - inicio).count() << " microssegundos" << std::endl;
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        bubbleSort(numbers);
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << "Tempo levado para ordenar o algoritmo de " << size << " numeros usando Bubble Sort: " << duration.count() << " segundos" << std::endl;
     }
+
     return 0;
 }
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
